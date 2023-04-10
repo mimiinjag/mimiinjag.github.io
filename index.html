@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>問答遊戲</title>
+  </head>
+  <body>
+    <h1>問答遊戲</h1>
+    <div id="question"></div>
+    <div id="choices"></div>
+    <button id="submit">提交答案</button>
+    <div id="result"></div>
+    <div id="score"></div>
+    <script>
+      // 問答陣列
+      const questions = [
+        {
+          question: "請問什麼動物有九條命？",
+          choices: ["貓", "狗", "老鼠"],
+          answer: "貓"
+        },
+        {
+          question: "哪一年美國獨立宣言發布？",
+          choices: ["1776", "1786", "1796"],
+          answer: "1776"
+        },
+        {
+          question: "請問下列哪個城市不在台灣？",
+          choices: ["台北", "高雄", "上海"],
+          answer: "上海"
+        }
+      ];
+
+      // 記錄玩家分數的變數
+      let score = 0;
+
+      // 取得網頁元素
+      const questionElement = document.getElementById("question");
+      const choicesElement = document.getElementById("choices");
+      const submitElement = document.getElementById("submit");
+      const resultElement = document.getElementById("result");
+      const scoreElement = document.getElementById("score");
+
+      // 顯示問題和選項
+      function displayQuestion(index) {
+        const question = questions[index];
+        questionElement.textContent = question.question;
+        choicesElement.innerHTML = "";
+        for (let i = 0; i < question.choices.length; i++) {
+          const choice = question.choices[i];
+          const button = document.createElement("button");
+          button.textContent = choice;
+          button.addEventListener("click", function() {
+            checkAnswer(choice, question.answer);
+          });
+          choicesElement.appendChild(button);
+        }
+      }
+
+      // 檢查答案並顯示提示
+      function checkAnswer(playerAnswer, correctAnswer) {
+        if (playerAnswer === correctAnswer) {
+          resultElement.textContent = "答對了！";
+          score++;
+        } else {
+          resultElement.textContent = "答錯了！";
+        }
+        displayNextQuestion();
+      }
+
+      // 顯示下一個問題或最終得分
+      function displayNextQuestion() {
+        if (score >= questions.length) {
+          questionElement.textContent = "";
+          choicesElement.innerHTML = "";
+          submitElement.style.display = "none";
+          resultElement.textContent = "";
+          scoreElement.textContent = "你的最終得分是 " + score + " 分。";
+        } else {
+          displayQuestion(score);
+        }
+      }
+
+      // 當提交按鈕被點擊時顯示下一個問題或最終得分
+      submitElement.addEventListener("click", displayNextQuestion);
+
+      // 顯示第一個問題
+      displayQuestion(0);
+    </script>
+  </body>
+</html>
